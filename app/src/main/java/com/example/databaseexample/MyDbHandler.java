@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
-import com.example.databaseexample.Contact;
-import com.example.databaseexample.Params;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +21,22 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+//        Log.d("Ravi", "on create ");
+//        db.execSQL("DROP TABLE IF EXISTS " + Params.TABLE_NAME);
+//        Log.d("Ravi", "on create drop table ");
+//        SQLiteDatabase.deleteDatabase(new File(Params.DB_NAME));
         String create = "CREATE TABLE " + Params.TABLE_NAME + "("
-                + Params.KEY_ID + " INTEGER PRIMARY KEY," + Params.KEY_NAME
-                + " TEXT, " + Params.KEY_PHONE + " TEXT" + ")";
+                + Params.Question_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Params.Question_Detail + " TEXT, "
+                + Params.Question_Option1 + " TEXT, "
+                + Params.Question_Option2 + " TEXT, "
+                + Params.Question_Option3 + " TEXT, "
+                + Params.Question_Option4 + " TEXT, "
+                + Params.Question_Answer + " INTEGER "
+                + ")";
         Log.d("Ravi", "Query being run is : " + create);
         db.execSQL(create);
+        Log.d("Ravi", "Create table  : ");
 
     }
 
@@ -36,24 +45,30 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     }
 
-
-    public void addContact(Contact contact) {
+    // add question
+    public void addContact(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(Params.KEY_NAME, contact.getName());
-        values.put(Params.KEY_PHONE, contact.getPhoneNumber());
+        ContentValues questionValues = new ContentValues();
+//        questionValues.put(Params.Question_KEY_ID, question.getId());
+        questionValues.put(Params.Question_Detail, question.getQuestion_Detail());
+        questionValues.put(Params.Question_Option1, question.getQuestion_Option1());
+        questionValues.put(Params.Question_Option2, question.getQuestion_Option2());
+        questionValues.put(Params.Question_Option3, question.getQuestion_Option3());
+        questionValues.put(Params.Question_Option4, question.getQuestion_Option4());
+        questionValues.put(Params.Question_Answer, question.getQuestion_Answer());
 
 
-        db.insert(Params.TABLE_NAME, null, values);
-        Log.d("Ravi", "addContact : Successfully inserted " + values);
+        db.insert(Params.TABLE_NAME, null, questionValues);
+        Log.d("Ravi", "addContact : Successfully inserted " + questionValues);
         db.close();
-
+        Log.d("Ravi", "addContact : Successfully close ");
 
     }
 
-    public List<Contact> getAllContacts() {
-        List<Contact> contactList = new ArrayList<>();
+    // list questions
+    public List<Question> getAllContacts() {
+        List<Question> questionList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Generate the query to read from the database
@@ -62,43 +77,55 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
         //Loop through now
         if (cursor.moveToFirst()) {
-            Log.d("Ravi", "List<Contact> : Successfully Listed ");
+            Log.d("Ravi", "List<Question> : Successfully Listed ");
             do {
-                Contact contact = new Contact();
-                contact.setId(Integer.parseInt(cursor.getString(0)));
-                contact.setName(cursor.getString(1));
-                contact.setPhoneNumber(cursor.getString(2));
-                contactList.add(contact);
-                Log.d("Ravi", "List<Contact> : Successfully Listed " + contact);
+                Question question = new Question();
+                question.setId(Integer.parseInt(cursor.getString(0)));
+                question.setQuestion_Detail(cursor.getString(1));
+                question.setQuestion_Option1(cursor.getString(2));
+                question.setQuestion_Option2(cursor.getString(3));
+                question.setQuestion_Option3(cursor.getString(4));
+                question.setQuestion_Option4(cursor.getString(5));
+                question.setQuestion_Answer(cursor.getString(6));
+                questionList.add(question);
+                Log.d("Ravi", "List<Question> : Successfully Listed " + question);
             } while (cursor.moveToNext());
         }
-        return contactList;
+        return questionList;
     }
 
-    public int updateContact(Contact contact) {
+    // Update Quextion
+    public int updateContact(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(Params.KEY_NAME, contact.getName());
-        values.put(Params.KEY_PHONE, contact.getPhoneNumber());
+        ContentValues questionValues = new ContentValues();
+        questionValues.put(Params.Question_KEY_ID, question.getId());
+        questionValues.put(Params.Question_Detail, question.getQuestion_Detail());
+        questionValues.put(Params.Question_Option1 , question.getQuestion_Option1());
+        questionValues.put(Params.Question_Option2, question.getQuestion_Option2());
+        questionValues.put(Params.Question_Option3, question.getQuestion_Option3());
+        questionValues.put(Params.Question_Option4, question.getQuestion_Option4());
+        questionValues.put(Params.Question_Answer, question.getQuestion_Answer());
 
         //Lets update now
-        Log.d("Ravi", "updateContact : Successfully updated " + values);
+        Log.d("Ravi", "updateContact : Successfully updated " + questionValues);
 
-        return db.update(Params.TABLE_NAME, values, Params.KEY_ID + "=?",
-                new String[]{String.valueOf(contact.getId())});
+        return db.update(Params.TABLE_NAME, questionValues, Params.Question_KEY_ID + "=?",
+                new String[]{String.valueOf(question.getId())});
 
     }
 
+    // delete question by id
     public void deleteContactById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Params.TABLE_NAME, Params.KEY_ID + "=?", new String[]{String.valueOf(id)});
+        db.delete(Params.TABLE_NAME, Params.Question_KEY_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
     }
 
-    public void deleteContact(Contact contact) {
+    // delete question by id
+    public void deleteContact(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Params.TABLE_NAME, Params.KEY_ID + "=?", new String[]{String.valueOf(contact.getId())});
+        db.delete(Params.TABLE_NAME, Params.Question_KEY_ID + "=?", new String[]{String.valueOf(question.getId())});
         db.close();
     }
 
