@@ -2,189 +2,272 @@ package com.example.databaseexample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.databaseexample.Params.Question_KEY_ID;
+
+/*
+APP - DataBaseExample
+Path D:\AndroidStudioProjects\RNS\DataBaseExample
+Github Repository - DataBaseExample
+
+This is SQL database example
+This is Multiple choice Question type data base
+This is Display Question list in logcat
+Data is added/updated/deleted/listed in logcat only
+
+Updated to add/Edit/Delete/record in main activity screen
+
+ */
 public class MainActivity extends AppCompatActivity {
+
+    TextView textView;
+    TextView textView2;
+    TextView textView3;
+    TextView textView4;
+    TextView textView5;
+    TextView textView6;
+    TextView textView7;
+    EditText editquestionid;
+    Button button;
+    Button button2;
+    Button button3;
+    Button button4;
+    Button button5;
+    Button button6;
+    ListView listView;
+    private Question currentQuestion;
+    private int questionCounter;
+    int id_To_Update = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+        textView2 = findViewById(R.id.editTextViewQ);
+        textView3 = findViewById(R.id.editTextViewOA);
+        textView4 = findViewById(R.id.editTextViewOB);
+        textView5 = findViewById(R.id.editTextViewOC);
+        textView6 = findViewById(R.id.editTextViewOD);
+        textView7 = findViewById(R.id.editTextViewAns);
+        button = findViewById(R.id.button);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
+        button6 = findViewById(R.id.button6);
+        EditText editText = (EditText) findViewById(R.id.editquestionid);
+
         MyDbHandler db = new MyDbHandler(MainActivity.this);
+        ArrayList questionList = db.getAllCotacts();
+        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1, questionList);
+        Log.d("Ravi", "Start 2");
+
+        // display question in list view on Question
+        List<Question> getAllCotacts = db.getAllContacts();
+        Log.d("Ravi", " List View ");
+        currentQuestion = (Question) questionList.get(questionCounter);
+
+        listView = findViewById(R.id.listView);
+        listView.setAdapter(arrayAdapter);
+        textView.setText(Question_KEY_ID);
+        Log.d("Ravi", " List View " + Question_KEY_ID);
+        textView2.setText(currentQuestion.getQuestion_Detail());
+        textView3.setText(currentQuestion.getQuestion_Option1());
+        textView4.setText(currentQuestion.getQuestion_Option2());
+        textView5.setText(currentQuestion.getQuestion_Option3());
+        textView6.setText(currentQuestion.getQuestion_Option4());
+        textView7.setText(currentQuestion.getQuestion_Answer());
+
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "List Button Clicked", Toast.LENGTH_SHORT).show();
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 1 ");
+//                Log.d("Ravi", " MainActivity setOnClickListener onClick 2 ");
+
+                int questionid = Integer.parseInt(editText.getText().toString());
+                currentQuestion = (Question) questionList.get(questionid);
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 4 " + questionid);
+                textView.setText(Question_KEY_ID);
+                Log.d("Ravi", " List View " + Question_KEY_ID);
+                textView2.setText(currentQuestion.getQuestion_Detail());
+                textView3.setText(currentQuestion.getQuestion_Option1());
+                textView4.setText(currentQuestion.getQuestion_Option2());
+                textView5.setText(currentQuestion.getQuestion_Option3());
+                textView6.setText(currentQuestion.getQuestion_Option4());
+                textView7.setText(currentQuestion.getQuestion_Answer());
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 5 " + questionid);
+
+                //        Setting Text Using Java class:
+                //        Below is the example code in which we set the text on Button programmatically means in java class.
+                //        The output will be same as the above.
+                Button button5 = (Button) findViewById(R.id.button5);
+                button5.setText("Previous");//set the text on button
+                Button button6 = (Button) findViewById(R.id.button6);
+                button6.setText("Next");//set the text on button
+            }
+        });
+
+//        Setting Text Color On Button Inside Java class:
+//        Below is the example code in which we set the text color of a Button programmatically means in java class.
+//
+//        Button simpleButton=(Button) findViewById(R.id.simpleButton);
+//        simpleButton.setTextColor(Color.RED);//set the red color for the text
+
+//        Setting textSize In Java class:
+//        Below is the example code in which we set the text size of a Button programmatically means in java class.
+//        Button simpleButton=(Button)findViewById(R.id.simpleButton);
+//        simpleButton.setTextSize(25);//set the text size of button
+
+//        Setting background in Button In Java class:
+//        Below is the example code in which we set the background color of a Button programmatically means in java class.
+//
+//        Button simpleButton=(Button)findViewById(R.id.simpleButton);
+//        simpleButton.setBackgroundColor(Color.BLACK);//set the black color of button background
+
+
+        // add
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Add Button Clicked", Toast.LENGTH_SHORT).show();
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 1 ");
+//                Log.d("Ravi", " MainActivity setOnClickListener onClick 2 ");
+
+                int questionid = Integer.parseInt(editText.getText().toString());
+                currentQuestion = (Question) questionList.get(questionid);
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 4 " + questionid);
+                textView.setText(Question_KEY_ID);
+                Log.d("Ravi", " List View " + Question_KEY_ID);
+                textView2.setText(currentQuestion.getQuestion_Detail());
+                textView3.setText(currentQuestion.getQuestion_Option1());
+                textView4.setText(currentQuestion.getQuestion_Option2());
+                textView5.setText(currentQuestion.getQuestion_Option3());
+                textView6.setText(currentQuestion.getQuestion_Option4());
+                textView7.setText(currentQuestion.getQuestion_Answer());
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 5 " + questionid);
+
+                //        Setting Text Using Java class:
+                //        Below is the example code in which we set the text on Button programmatically means in java class.
+                //        The output will be same as the above.
+                Button button5 = (Button) findViewById(R.id.button5);
+                button5.setText("Dsicard");//set the text on button
+                Button button6 = (Button) findViewById(R.id.button6);
+                button6.setText("Save");//set the text on button
+            }
+        });
+
+        // Update
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Update Button Clicked", Toast.LENGTH_SHORT).show();
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 1 ");
+
+                int questionid = Integer.parseInt(editText.getText().toString());
+                currentQuestion = (Question) questionList.get(questionid);
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 4 " + questionid);
+                textView.setText(Question_KEY_ID);
+                Log.d("Ravi", " List View " + Question_KEY_ID);
+                textView2.setText(currentQuestion.getQuestion_Detail());
+                textView3.setText(currentQuestion.getQuestion_Option1());
+                textView4.setText(currentQuestion.getQuestion_Option2());
+                textView5.setText(currentQuestion.getQuestion_Option3());
+                textView6.setText(currentQuestion.getQuestion_Option4());
+                textView7.setText(currentQuestion.getQuestion_Answer());
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 5 " + questionid);
+
+                Button button5 = (Button) findViewById(R.id.button5);
+                button5.setText("Dsicard");//set the text on button
+                Button button6 = (Button) findViewById(R.id.button6);
+                button6.setText("Save");//set the text on button
+            }
+        });
+
+        // Delete
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Delete Button Clicked", Toast.LENGTH_SHORT).show();
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 1 ");
+
+                int questionid = Integer.parseInt(editText.getText().toString());
+                currentQuestion = (Question) questionList.get(questionid);
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 4 " + questionid);
+                textView.setText(Question_KEY_ID);
+                Log.d("Ravi", " List View " + Question_KEY_ID);
+                textView2.setText(currentQuestion.getQuestion_Detail());
+                textView3.setText(currentQuestion.getQuestion_Option1());
+                textView4.setText(currentQuestion.getQuestion_Option2());
+                textView5.setText(currentQuestion.getQuestion_Option3());
+                textView6.setText(currentQuestion.getQuestion_Option4());
+                textView7.setText(currentQuestion.getQuestion_Answer());
+                Log.d("Ravi", " MainActivity setOnClickListener onClick 5 " + questionid);
+
+
+                Log.d("Ravi", "DisplayContact onOptionsItemSelected Start 28");
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Do you want to Delete ?");
+                builder.setTitle("Alert !");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                db.deleteContactById(id);
+                                Toast.makeText(getApplicationContext(), "Deleted Successfully",
+                                        Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setTitle("Are you sure");
+                alertDialog.show();
+            }
+        });
+
+        // add record
+//        // get one question
+//        int Value = 1;
+//        Log.d("Ravi", "Cursor Start 210 ");
+//        Cursor rs = db.getData(1);
+//        id_To_Update = Value;
+////        rs.moveToFirst();
+//        Log.d("Ravi", "Cursor Start 211 "+ rs);
+//
+//        textView.setText(rs.getString(rs.getColumnIndex(Params.Question_KEY_ID)));
+//        Log.d("Ravi", " List View 212 " + Question_KEY_ID);
+//        textView2.setText(rs.getString(rs.getColumnIndex(Params.Question_Detail)));
+//        textView3.setText(rs.getString(rs.getColumnIndex(Params.Question_Option1)));
+//        textView4.setText(rs.getString(rs.getColumnIndex(Params.Question_Option2)));
+//        textView5.setText(rs.getString(rs.getColumnIndex(Params.Question_Option3)));
+//        textView6.setText(rs.getString(rs.getColumnIndex(Params.Question_Option4)));
+//        textView7.setText(rs.getString(rs.getColumnIndex(Params.Question_Answer)));
+//        Log.d("Ravi", " List View 213 " + Question_Detail);
+
         // Creating a contact object for the db
-        Question q1 = new Question();
-        q1.setQuestion_Detail("Presentation of the first ever railway budget in India held in");
-        q1.setQuestion_Option1("1853");
-        q1.setQuestion_Option2("1888");
-        q1.setQuestion_Option3("1925");
-        q1.setQuestion_Option4("1905");
-        q1.setQuestion_Answer("3");
 
-        // Adding a contact to the db
-        db.addContact(q1);
-        Log.d("Ravi", "Id for " + q1.getId() + " successfully added to the db " + q1);
-        Log.d("Ravi", "Start 10");
-
-        Question q2 = new Question();
-        q2.setQuestion_Detail("Which is the shortest station name in Indian Railways? ");
-        q2.setQuestion_Option1("Pune");
-        q2.setQuestion_Option2("Bc");
-        q2.setQuestion_Option3("Goa");
-        q2.setQuestion_Option4("Ib");
-        q2.setQuestion_Answer("4");
-        db.addContact(q2);
-        Log.d("Ravi", "Id for " + q2.getId() + " successfully added to the db " + q2);
-        Question q3 = new Question();
-        q3.setQuestion_Detail("Which is the longest station name in Indian Railways? ");
-        q3.setQuestion_Option1("Kanyakumari");
-        q3.setQuestion_Option2("Venkatanarasimharajuvariapeta");
-        q3.setQuestion_Option3("Kharagpur");
-        q3.setQuestion_Option4("Chhatrapati Shivaji Terminus");
-        q3.setQuestion_Answer("2");
-        db.addContact(q3);
-        Log.d("Ravi", "Id for " + q3.getId() + " successfully added to the db " + q3);
-        Question q4 = new Question();
-        q4.setQuestion_Detail("Where is the wheel and axle plant of Indian Railways situated? ");
-        q4.setQuestion_Option1( "Chittranjan");
-        q4.setQuestion_Option2("Kapurthala");
-        q4.setQuestion_Option3("Bangalore");
-        q4.setQuestion_Option4("Perambur");
-        q4.setQuestion_Answer("3");
-        db.addContact(q4);
-        Log.d("Ravi", "Id for " + q4.getId() + " successfully added to the db " + q4);
-        Question q5 = new Question();
-        q5.setQuestion_Detail("At which of the following places Diesel Component Works is established?");
-        q5.setQuestion_Option1("Jamshedpur");
-        q5.setQuestion_Option2("Patiala");
-        q5.setQuestion_Option3("Perambur");
-        q5.setQuestion_Option4("Varanasi");
-        q5.setQuestion_Answer("Varanasi");
-        db.addContact(q5);
-        Log.d("Ravi", "Id for " + q5.getId() + " successfully added to the db " + q5);
-        Question q6 = new Question();
-        q6.setQuestion_Detail("Diesel Locomotive Works is situated at");
-        q6.setQuestion_Option1("Perambur");
-        q6.setQuestion_Option2("Varanasi");
-        q6.setQuestion_Option3("Kapurthala");
-        q6.setQuestion_Option4("Bangalore");
-        q6.setQuestion_Answer("2");
-        db.addContact(q6);
-        Log.d("Ravi", "Id for " + q6.getId() + " successfully added to the db " + q6);
-        Question q7 = new Question();
-        q7.setQuestion_Detail("The passenger bogies of the Indian Railways are manufactured at which of the following places? ");
-        q7.setQuestion_Option1("Kapurthala");
-        q7.setQuestion_Option2("Chittranjan");
-        q7.setQuestion_Option3("Perambur");
-        q7.setQuestion_Option4("Bangalore");
-        q7.setQuestion_Answer("3");
-        db.addContact(q7);
-        Log.d("Ravi", "Id for " + q7.getId() + " successfully added to the db " + q7);
-        Question q8 = new Question();
-        q8.setQuestion_Detail("In diesel engine, ignition is caused by");
-        q8.setQuestion_Option1("Spark");
-        q8.setQuestion_Option2("Automatic starter");
-        q8.setQuestion_Option3("Compression ");
-        q8.setQuestion_Option4("Friction");
-        q8.setQuestion_Answer("3");
-        db.addContact(q8);
-        Log.d("Ravi", "Id for " + q8.getId() + " successfully added to the db " + q8);
-        Question q9 = new Question();
-        q9.setQuestion_Detail("Which train in India has the longest route length? ");
-        q9.setQuestion_Option1("Vivek Express");
-        q9.setQuestion_Option2("Indrani Express");
-        q9.setQuestion_Option3("Kanyakumari Express");
-        q9.setQuestion_Option4("Bangalore Guwahati Express");
-        q9.setQuestion_Answer("1");
-        db.addContact(q9);
-        Log.d("Ravi", "Id for " + q9.getId() + " successfully added to the db" + q9);
-        Question q10 = new Question();
-        q10.setQuestion_Detail("When was the first underground railway (Metro Railway) started? ");
-        q10.setQuestion_Option1("1982");
-        q10.setQuestion_Option2("1989");
-        q10.setQuestion_Option3("1984");
-        q10.setQuestion_Option4("1992");
-        q10.setQuestion_Answer("3");
-        db.addContact(q10);
-        Log.d("Ravi", "Id for " + q10.getId() + " successfully added to the db " + q10);
-        Question q11 = new Question();
-        q11.setQuestion_Detail("A station where the rail lines end, is called");
-        q11.setQuestion_Option1("Junction station");
-        q11.setQuestion_Option2("Way-side station");
-        q11.setQuestion_Option3("Block station");
-        q11.setQuestion_Option4("Terminal station");
-        q11.setQuestion_Answer("4");
-        db.addContact(q11);
-        Log.d("Ravi", "Id for " + q11.getId() + " successfully added to the db " + q11);
-        Question q12 = new Question();
-        q12.setQuestion_Detail("How much distance was travelled by first train of India? ");
-        q12.setQuestion_Option1("33 km");
-        q12.setQuestion_Option2("36 km");
-        q12.setQuestion_Option3("34 km");
-        q12.setQuestion_Option4("46 km");
-        q12.setQuestion_Answer("3");
-        db.addContact(q12);
-        Log.d("Ravi", "Id for " + q12.getId() + " successfully added to the db " + q12);
-        Question q13 = new Question();
-        q13.setQuestion_Detail("What is the position of the Indian Railway in the world according to the length of rail lines? ");
-        q13.setQuestion_Option1("First");
-        q13.setQuestion_Option2("Second");
-        q13.setQuestion_Option3("Third");
-        q13.setQuestion_Option4("Fourth");
-        q13.setQuestion_Answer("4");
-        db.addContact(q13);
-        Log.d("Ravi", "Id for " + q13.getId() + " successfully added to the db " + q13);
-        Question q14 = new Question();
-        q14.setQuestion_Detail("General Manger is responsible for");
-        q14.setQuestion_Option1("Railway Board");
-        q14.setQuestion_Option2("Railway Ministry");
-        q14.setQuestion_Option3("Both railway Board and Railway Ministry");
-        q14.setQuestion_Option4("None of these");
-        q14.setQuestion_Answer("1");
-        db.addContact(q14);
-        Log.d("Ravi", "Id for " + q14.getId() + " successfully added to the db " + q14);
-        Question q15 = new Question();
-        q15.setQuestion_Detail("The headquarters of South-Central Railways is situated at");
-        q15.setQuestion_Option1("Mumbai (CST) ");
-        q15.setQuestion_Option2("Chennai");
-        q15.setQuestion_Option3("Secundrabad");
-        q15.setQuestion_Option4( "mumbai (Charch Gate)");
-        q15.setQuestion_Answer("3");
-        db.addContact(q15);
-        Log.d("Ravi", "Id for " + q15.getId() + " successfully added to the db" + q15);
-
-        // update question
-        q15.setQuestion_Detail("The headquarters of South-Central Railways is situated at");
-        q15.setQuestion_Option1("1 Mumbai (CST) ");
-        q15.setQuestion_Option2("2 Chennai");
-        q15.setQuestion_Option3("3 Secundrabad");
-        q15.setQuestion_Option4( "4 mumbai (Charch Gate)");
-        q15.setQuestion_Answer("3");
-        int affectedRows = db.updateContact(q15);
-        Log.d("Ravi", "Id for " + q15 + " successfully updated to the db" + q15);
-        Log.d("Ravi", "No of affected rows are: " + affectedRows);
-
-        q15.setQuestion_Detail("The headquarters of South-Central Railways is situated at");
-        q15.setQuestion_Option1("5 Mumbai (CST) ");
-        q15.setQuestion_Option2("6 Chennai");
-        q15.setQuestion_Option3("7 Secundrabad");
-        q15.setQuestion_Option4( "8 mumbai (Charch Gate)");
-        q15.setQuestion_Answer("3");
-        affectedRows = db.updateContact(q15);
-        Log.d("Ravi", "Id for " + q15 + " successfully updated to the db" + q15);
-        Log.d("Ravi", "No of affected rows are: " + affectedRows);
-
-        q15.setQuestion_Detail("The headquarters of South-Central Railways is situated at");
-        q15.setQuestion_Option1("Mumbai (CST) ");
-        q15.setQuestion_Option2("Chennai");
-        q15.setQuestion_Option3("Secundrabad");
-        q15.setQuestion_Option4( "mumbai (Charch Gate)");
-        q15.setQuestion_Answer("3");
-        affectedRows = db.updateContact(q15);
-        Log.d("Ravi", "Id for " + q15 + " successfully updated to the db" + q15);
-        Log.d("Ravi", "No of affected rows are: " + affectedRows);
 
         // delete contact by id
 //        db.deleteContactById(2);
@@ -200,19 +283,27 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("Ravi", "Id for 18 successfully updated to the db");
 //        db.deleteContactById(19);
 //        Log.d("Ravi", "Id for 19 successfully updated to the db");
-
-        // Get all question
-        List<Question> allQuestions = db.getAllContacts();
-        for(Question question : allQuestions){
-            Log.d("Ravi", "List Question \nId: " + question.getId() + "\n" +
-                    "Question : " + question.getQuestion_Detail() + "\n" +
-                    "Option 1: " + question.getQuestion_Option1() + "\n" +
-                    "Option 2: " + question.getQuestion_Option2() + "\n" +
-                    "Option 3: " + question.getQuestion_Option3() + "\n" +
-                    "Option 4: " + question.getQuestion_Option4() + "\n" +
-                    "Answer : " + question.getQuestion_Answer() + "\n" );
+        // this loop delete records from id 50 to 495 from data base
+        for(int i= 50; i<=495; i++){
+                    db.deleteContactById(i);
+//            Log.d("Ravi", "List Question \nId: " + question.getId() + "\n" +
+//                    "Question : " + question.getQuestion_Detail() + "\n" +
+//                    "Option 1: " + question.getQuestion_Option1() + "\n" +
+//                    "Option 2: " + question.getQuestion_Option2() + "\n" +
+//                    "Option 3: " + question.getQuestion_Option3() + "\n" +
+//                    "Option 4: " + question.getQuestion_Option4() + "\n" +
+//                    "Answer : " + question.getQuestion_Answer() + "\n" );
         }
 
+        // Get all question
+        // this line display all record on screen
+        List<Question> allQuestions = db.getAllContacts();
+
+        // this loop display all record in logcat
+        for(Question question : allQuestions){
+            Log.d("Ravi", "List Question Id: " + question.getId() + "Question : " + question.getQuestion_Detail() + "\n" +
+                    "Option 1: " + question.getQuestion_Option1() + "Option 2: " + question.getQuestion_Option2() + "Option 3: " + question.getQuestion_Option3() + "Option 4: " + question.getQuestion_Option4() + "Answer : " + question.getQuestion_Answer() + "\n" );
+        }
         // count question
         Log.d("Ravi", "You have total "+ db.getCount()+ " Question in your database");
 

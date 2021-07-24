@@ -45,6 +45,14 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getData(int id) {
+        Log.d("Ravi", "DBHelper Cursor Start 47 " + id );
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + Params.TABLE_NAME + " where id="+id+"", null );
+        Log.d("Ravi", "DBHelper Cursor Start 48 " + res);
+        return res;
+    }
+
     // add question
     public void addContact(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -81,16 +89,16 @@ public class MyDbHandler extends SQLiteOpenHelper {
             do {
                 Question question = new Question();
                 question.setId(Integer.parseInt(cursor.getString(0)));
-                question.setQuestion_Detail(cursor.getString(1));
+                question.setQuestion_Detail(cursor.getString(cursor.getColumnIndex(Params.Question_Detail)));
                 question.setQuestion_Option1(cursor.getString(2));
                 question.setQuestion_Option2(cursor.getString(3));
                 question.setQuestion_Option3(cursor.getString(4));
                 question.setQuestion_Option4(cursor.getString(5));
                 question.setQuestion_Answer(cursor.getString(6));
                 questionList.add(question);
-                Log.d("Ravi", "List<Question> : Successfully Listed " + question);
             } while (cursor.moveToNext());
         }
+        Log.d("Ravi", "List<Question> : Successfully Listed and return  ");
         return questionList;
     }
 
@@ -134,7 +142,33 @@ public class MyDbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         return cursor.getCount();
+    }
 
+    public ArrayList getAllCotacts() {
+        List<Question> questionList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        // Generate the query to read from the database
+        String select = "SELECT * FROM " + Params.TABLE_NAME;
+        Cursor cursor = db.rawQuery(select, null);
+
+        //Loop through now
+        if (cursor.moveToFirst()) {
+            Log.d("Ravi", "List<Question> : Successfully Listed 1");
+            do {
+                Question question = new Question();
+                question.setId(Integer.parseInt(cursor.getString(0)));
+                question.setQuestion_Detail(cursor.getString(1));
+                question.setQuestion_Option1(cursor.getString(2));
+                question.setQuestion_Option2(cursor.getString(3));
+                question.setQuestion_Option3(cursor.getString(4));
+                question.setQuestion_Option4(cursor.getString(5));
+                question.setQuestion_Answer(cursor.getString(6));
+                questionList.add(question);
+            } while (cursor.moveToNext());
+            Log.d("Ravi", "List<Question> getAllCotacts : : Successfully Listed 2");
+        }
+        Log.d("Ravi", "List<Question> getAllCotacts : Successfully Listed and return questionlist 3");
+        return (ArrayList) questionList;
     }
 }
