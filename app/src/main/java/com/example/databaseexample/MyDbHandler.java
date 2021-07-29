@@ -3,6 +3,7 @@ package com.example.databaseexample;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -51,6 +52,30 @@ public class MyDbHandler extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select * from " + Params.TABLE_NAME + " where id="+id+"", null );
         Log.d("Ravi", "DBHelper Cursor Start 48 " + res);
         return res;
+    }
+
+    public Cursor getData() {
+        Log.d("Ravi", "DBHelper Cursor Start 47 ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + Params.TABLE_NAME, null );
+        Log.d("Ravi", "DBHelper Cursor Start 48 " + res);
+        return res;
+
+    }
+
+    // insert data
+    public long insertData(String Question, String OptionA, String OptionB, String OptionC, String OptionD, String Answer)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Params.Question_Detail, Question);
+        contentValues.put(Params.Question_Option1, OptionA);
+        contentValues.put(Params.Question_Option2, OptionB);
+        contentValues.put(Params.Question_Option3, OptionC);
+        contentValues.put(Params.Question_Option4, OptionD);
+        contentValues.put(Params.Question_Answer, Answer);
+        long id = db.insert(Params.TABLE_NAME, null , contentValues);
+        return id;
     }
 
     // add question
@@ -102,32 +127,33 @@ public class MyDbHandler extends SQLiteOpenHelper {
         return questionList;
     }
 
-    // Update Quextion
-    public int updateContact(Question question) {
+    // Update Question
+    public int updateContact(String Qid, String Question, String OptionA, String OptionB, String OptionC, String OptionD, String Answer) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues questionValues = new ContentValues();
-        questionValues.put(Params.Question_KEY_ID, question.getId());
-        questionValues.put(Params.Question_Detail, question.getQuestion_Detail());
-        questionValues.put(Params.Question_Option1 , question.getQuestion_Option1());
-        questionValues.put(Params.Question_Option2, question.getQuestion_Option2());
-        questionValues.put(Params.Question_Option3, question.getQuestion_Option3());
-        questionValues.put(Params.Question_Option4, question.getQuestion_Option4());
-        questionValues.put(Params.Question_Answer, question.getQuestion_Answer());
+        questionValues.put(Params.Question_KEY_ID, Qid);
+        questionValues.put(Params.Question_Detail, Question);
+        questionValues.put(Params.Question_Option1, OptionA);
+        questionValues.put(Params.Question_Option2, OptionB);
+        questionValues.put(Params.Question_Option3, OptionC);
+        questionValues.put(Params.Question_Option4, OptionD);
+        questionValues.put(Params.Question_Answer, Answer);
 
         //Lets update now
         Log.d("Ravi", "updateContact : Successfully updated " + questionValues);
 
-        return db.update(Params.TABLE_NAME, questionValues, Params.Question_KEY_ID + "=?",
-                new String[]{String.valueOf(question.getId())});
-
+        int RowsUpdated = db.update(Params.TABLE_NAME, questionValues, Params.Question_KEY_ID + "=?",
+                new String[]{String.valueOf(Qid)});
+        return RowsUpdated;
     }
 
     // delete question by id
-    public void deleteContactById(int id) {
+    public int deleteContactById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Params.TABLE_NAME, Params.Question_KEY_ID + "=?", new String[]{String.valueOf(id)});
+//        int RowsDeleted = db.delete(Params.TABLE_NAME, Params.Question_KEY_ID + "=?", new String[]{String.valueOf(id)});
+        int RowsDeleted = db.delete(Params.TABLE_NAME, Params.Question_KEY_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
+        return RowsDeleted;
     }
 
     // delete question by id
@@ -137,6 +163,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // count number of rows (question) in your database
     public int getCount() {
         String query = "SELECT  * FROM " + Params.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -144,8 +171,17 @@ public class MyDbHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public ArrayList getAllCotacts() {
-        List<Question> questionList = new ArrayList<>();
+    // count number of rows (question) in your database
+    public int numberOfRows(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.d("Ravi", "DBHelper numberOfRows Start 49 ");
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, Params.TABLE_NAME );
+        Log.d("Ravi", "DBHelper numberOfRows Start 50 " + numRows);
+        return numRows;
+    }
+
+    public ArrayList<String> getAllCotacts() {
+        ArrayList<String> questionList = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Generate the query to read from the database
@@ -156,19 +192,21 @@ public class MyDbHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             Log.d("Ravi", "List<Question> : Successfully Listed 1");
             do {
-                Question question = new Question();
-                question.setId(Integer.parseInt(cursor.getString(0)));
-                question.setQuestion_Detail(cursor.getString(1));
-                question.setQuestion_Option1(cursor.getString(2));
-                question.setQuestion_Option2(cursor.getString(3));
-                question.setQuestion_Option3(cursor.getString(4));
-                question.setQuestion_Option4(cursor.getString(5));
-                question.setQuestion_Answer(cursor.getString(6));
-                questionList.add(question);
+//                Question question = new Question();
+//                question.setId(Integer.parseInt(cursor.getString(0)));
+//                question.setQuestion_Detail(cursor.getString(1));
+//                questionlist.cursor.getString(cursor.getColumnIndex(Params.Question_Detail));
+//                question.setQuestion_Option1(cursor.getString(2));
+//                question.setQuestion_Option2(cursor.getString(3));
+//                question.setQuestion_Option3(cursor.getString(4));
+//                question.setQuestion_Option4(cursor.getString(5));
+//                question.setQuestion_Answer(cursor.getString(6));
+//                questionList.add(question);
+                questionList.add(cursor.getString(cursor.getColumnIndex(Params.Question_Detail)));
             } while (cursor.moveToNext());
             Log.d("Ravi", "List<Question> getAllCotacts : : Successfully Listed 2");
         }
         Log.d("Ravi", "List<Question> getAllCotacts : Successfully Listed and return questionlist 3");
-        return (ArrayList) questionList;
+        return questionList;
     }
 }
