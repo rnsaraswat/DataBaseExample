@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         // all Question are displayed in list
         ArrayList questionList = db.getAllCotacts();
         ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1, questionList);
-        Log.d("Ravi", "Start 2");
+        Log.d("Ravi", "Start 2 no of Question in list are : " + questionList.size());
 
         // Question are clicked in the list is displayed in Question with Options
         listView = (ListView)findViewById(R.id.listView);
@@ -102,10 +102,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "List Item is Clicked", Toast.LENGTH_SHORT).show();
-                Log.d("Ravi", "MainActivity listView.setOnItemClickListener onItemClick() 1 list item clicked ");
-//                String Qid = ((TextView) view).getText().toString();
-                int Qid = listView.getId();
-//                int keyid = Integer.parseInt(Qid);
+                Log.d("Ravi", "MainActivity listView.setOnItemClickListener onItemClick() 1 list item clicked position " + position + " id = " + id);
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                int Qid = Integer.parseInt(selectedItem.substring(0, selectedItem.indexOf(',', 0)));
+
+                Log.d("Ravi", "MainActivity listView.setOnItemClickListener onItemClick() 1 list item clicked selected item " + selectedItem + " id = " + Qid + ", ki Position " +selectedItem.indexOf(',', 0) +" Extracted text " + selectedItem.substring(0, selectedItem.indexOf(',', 0)));
+//                int Qid = listView.getCheckedItemPosition();
+                Toast.makeText(MainActivity.this, "Qid " + Qid, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, ", ki Position" + selectedItem.indexOf(',', 0), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Extracted text " + selectedItem.substring(0, selectedItem.indexOf(',', 0)), Toast.LENGTH_SHORT).show();
                 if (Qid>=0){
                     Cursor rs = db.getData(Qid);
                     rs.moveToFirst();
@@ -228,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                         edittextView5.setText("");
                         edittextView6.setText("");
                         edittextView7.setText("");
-                        Log.d("Ravi", "MainActivity add button.setOnItemClickListener onClick() 8 filed become empty ");
+                        Log.d("Ravi", "MainActivity add button.setOnItemClickListener onClick() 8 filled become empty ");
                     }
                 }
             }
@@ -358,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("Ravi", "Id for 18 successfully updated to the db");
 //        db.deleteContactById(19);
 //        Log.d("Ravi", "Id for 19 successfully updated to the db");
-        // this loop delete records from id 50 to 495 from data base
+//         this loop delete records from id 50 to 495 from data base
 //        for(int i= 50; i<=495; i++){
 //            db.deleteContactById(i);
 //            Log.d("Ravi", "List Question \nId: " + question.getId() + "\n" +
@@ -380,8 +385,8 @@ public class MainActivity extends AppCompatActivity {
         rs.moveToFirst();
         Log.d("Ravi", "MainActivity onCreate 4 " + rs);
         Log.d("Ravi", "MainActivity onCreate 5 " + rs.getString(rs.getColumnIndex(Question_KEY_ID)) + ", " + rs.getString(rs.getColumnIndex(Question_Detail)) + "\n");
-//        Log.d("Ravi", "MainActivity onCreate getData() 4 " + rs.getString(rs.getColumnIndex(Question_Option1)) + ", " + rs.getString(rs.getColumnIndex(Question_Option2)) + "\n");
-//        Log.d("Ravi", "MainActivity onCreate getData() 5 " + rs.getString(rs.getColumnIndex(Question_Option3)) + ", " + rs.getString(rs.getColumnIndex(Question_Option4)) + "\n");
+        Log.d("Ravi", "MainActivity onCreate getData() 4 " + rs.getString(rs.getColumnIndex(Question_Option1)) + ", " + rs.getString(rs.getColumnIndex(Question_Option2)) + "\n");
+        Log.d("Ravi", "MainActivity onCreate getData() 5 " + rs.getString(rs.getColumnIndex(Question_Option3)) + ", " + rs.getString(rs.getColumnIndex(Question_Option4)) + "\n");
     }
 
 }

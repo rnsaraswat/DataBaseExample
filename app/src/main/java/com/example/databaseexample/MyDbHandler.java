@@ -13,6 +13,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.databaseexample.Params.Question_Answer;
+import static com.example.databaseexample.Params.Question_Detail;
+import static com.example.databaseexample.Params.Question_KEY_ID;
+import static com.example.databaseexample.Params.Question_Option1;
+import static com.example.databaseexample.Params.Question_Option2;
+import static com.example.databaseexample.Params.Question_Option3;
+import static com.example.databaseexample.Params.Question_Option4;
+
 
 public class MyDbHandler extends SQLiteOpenHelper {
 
@@ -33,7 +41,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 + Params.Question_Option2 + " TEXT, "
                 + Params.Question_Option3 + " TEXT, "
                 + Params.Question_Option4 + " TEXT, "
-                + Params.Question_Answer + " INTEGER "
+                + Question_Answer + " INTEGER "
                 + ")";
         Log.d("Ravi", "Query being run is : " + create);
         db.execSQL(create);
@@ -73,7 +81,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         contentValues.put(Params.Question_Option2, OptionB);
         contentValues.put(Params.Question_Option3, OptionC);
         contentValues.put(Params.Question_Option4, OptionD);
-        contentValues.put(Params.Question_Answer, Answer);
+        contentValues.put(Question_Answer, Answer);
         long id = db.insert(Params.TABLE_NAME, null , contentValues);
         return id;
     }
@@ -89,7 +97,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         questionValues.put(Params.Question_Option2, question.getQuestion_Option2());
         questionValues.put(Params.Question_Option3, question.getQuestion_Option3());
         questionValues.put(Params.Question_Option4, question.getQuestion_Option4());
-        questionValues.put(Params.Question_Answer, question.getQuestion_Answer());
+        questionValues.put(Question_Answer, question.getQuestion_Answer());
 
 
         db.insert(Params.TABLE_NAME, null, questionValues);
@@ -137,7 +145,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         questionValues.put(Params.Question_Option2, OptionB);
         questionValues.put(Params.Question_Option3, OptionC);
         questionValues.put(Params.Question_Option4, OptionD);
-        questionValues.put(Params.Question_Answer, Answer);
+        questionValues.put(Question_Answer, Answer);
 
         //Lets update now
         Log.d("Ravi", "updateContact : Successfully updated " + questionValues);
@@ -202,7 +210,11 @@ public class MyDbHandler extends SQLiteOpenHelper {
 //                question.setQuestion_Option4(cursor.getString(5));
 //                question.setQuestion_Answer(cursor.getString(6));
 //                questionList.add(question);
-                questionList.add(cursor.getString(cursor.getColumnIndex(Params.Question_Detail)));
+                questionList.add(cursor.getString(cursor.getColumnIndex(Params.Question_KEY_ID)) + ", " + cursor.getString(cursor.getColumnIndex(Params.Question_Detail)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option1)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option2)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option3)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option4)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Answer)));
+                Log.d("Ravi", "MainActivity onCreate 5 " + cursor.getString(cursor.getColumnIndex(Question_KEY_ID)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Detail)) + "\n");
+                Log.d("Ravi", "MainActivity onCreate getData() 4 " + cursor.getString(cursor.getColumnIndex(Question_Option1)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option2)) + "\n");
+                Log.d("Ravi", "MainActivity onCreate getData() 5 " + cursor.getString(cursor.getColumnIndex(Question_Option3)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option4)) + "\n");
+
             } while (cursor.moveToNext());
             Log.d("Ravi", "List<Question> getAllCotacts : : Successfully Listed 2");
         }
