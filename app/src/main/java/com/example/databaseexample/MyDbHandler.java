@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import java.io.File;
@@ -41,7 +42,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 + Params.Question_Option2 + " TEXT, "
                 + Params.Question_Option3 + " TEXT, "
                 + Params.Question_Option4 + " TEXT, "
-                + Question_Answer + " INTEGER "
+                + Params.Question_Answer + " INTEGER "
                 + ")";
         Log.d("Ravi", "Query being run is : " + create);
         db.execSQL(create);
@@ -219,6 +220,48 @@ public class MyDbHandler extends SQLiteOpenHelper {
             Log.d("Ravi", "List<Question> getAllCotacts : : Successfully Listed 2");
         }
         Log.d("Ravi", "List<Question> getAllCotacts : Successfully Listed and return questionlist 3");
+        return questionList;
+    }
+
+    public ArrayList<Question> getAllQuestion() {
+        Log.d("Ravi", "ArrayList<Question> getAllQuestion() function start ");
+        ArrayList<Question> questionList = new ArrayList<Question>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Generate the query to read from the database
+        Log.d("Ravi", "ArrayList<Question> getAllQuestion() Prepared Query");
+        String select = "SELECT * FROM " + Params.TABLE_NAME;
+        Log.d("Ravi", "ArrayList<Question> getAllQuestion() run Query");
+        Cursor cursor = db.rawQuery(select, null);
+        Log.d("Ravi", "ArrayList<Question> getAllQuestion() Query completed");
+
+        //Loop through now
+        if (cursor.moveToFirst()) {
+            Log.d("Ravi", "ArrayList<Question> getAllQuestion() moveToFirst - Query record found");
+            do {
+                Log.d("Ravi", "ArrayList<Question> getAllQuestion() added all question one by one");
+                Question question = new Question();
+                question.setId(Integer.parseInt(cursor.getString(0)));
+                question.setQuestion_Detail(cursor.getString(1));
+//                question.cursor.getString(cursor.getColumnIndex(Params.Question_Detail));
+                question.setQuestion_Option1(cursor.getString(2));
+                question.setQuestion_Option2(cursor.getString(3));
+                question.setQuestion_Option3(cursor.getString(4));
+                question.setQuestion_Option4(cursor.getString(5));
+                question.setQuestion_Answer(cursor.getString(6));
+                questionList.add(question);
+                Log.d("Ravi", "ArrayList<Question> getAllQuestion() added all question one by one " + questionList);
+//                questionList.add(cursor.getString(cursor.getColumnIndex(Params.Question_KEY_ID)) + ", " + cursor.getString(cursor.getColumnIndex(Params.Question_Detail)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option1)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option2)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option3)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option4)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Answer)));
+                Log.d("Ravi", "MainActivity onCreate 5 " + cursor.getString(cursor.getColumnIndex(Question_KEY_ID)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Detail)) + "\n");
+                Log.d("Ravi", "MainActivity onCreate getData() 4 " + cursor.getString(cursor.getColumnIndex(Question_Option1)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option2)) + "\n");
+                Log.d("Ravi", "MainActivity onCreate getData() 5 " + cursor.getString(cursor.getColumnIndex(Question_Option3)) + ", " + cursor.getString(cursor.getColumnIndex(Question_Option4)) + "\n");
+            } while (cursor.moveToNext());
+            Log.d("Ravi", "ArrayList<Question> getAllQuestion() : Successfully  added to cursor ");
+        } else {
+            Log.d("Ravi", "List<Question> getAllCotacts : no record found ");
+        }
+
+        Log.d("Ravi", "List<Question> getAllCotacts : return questionlist 3");
         return questionList;
     }
 }

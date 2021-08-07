@@ -80,12 +80,12 @@
         android:layout_marginLeft="36dp"
         android:ems="10"
         android:hint="@string/question_id"
+        android:importantForAutofill="no"
         android:inputType="number"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextViewQ"
         app:layout_constraintStart_toEndOf="@+id/textViewid"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <EditText
         android:id="@+id/editTextViewQ"
@@ -138,14 +138,14 @@
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
         android:hint="@string/option_c"
+        android:importantForAutofill="no"
         android:inputType="text"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextViewOD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewOC"
-        app:layout_constraintTop_toBottomOf="@+id/editTextViewOB"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextViewOB" />
 
     <EditText
         android:id="@+id/editTextViewOD"
@@ -156,20 +156,21 @@
         android:layout_marginEnd="2dp"
         android:layout_marginRight="2dp"
         android:hint="@string/option_d"
+        android:importantForAutofill="no"
         android:inputType="text"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewOD"
-        app:layout_constraintTop_toBottomOf="@+id/editTextViewOC"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextViewOC" />
 
     <EditText
         android:id="@+id/editTextViewAns"
         android:layout_width="56dp"
         android:layout_height="39dp"
         android:hint="@string/answer_number"
+        android:importantForAutofill="no"
         android:inputType="number"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextViewQ"
@@ -177,18 +178,17 @@
         app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toEndOf="@+id/editquestionid"
         app:layout_constraintTop_toBottomOf="@+id/button4"
-        app:layout_constraintVertical_bias="1.0"
-        android:importantForAutofill="no" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="399dp"
-        android:layout_height="225dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextViewOD" />
+        app:layout_constraintTop_toBottomOf="@+id/button5" />
 
     <TextView
         android:id="@+id/textViewQ"
@@ -264,5 +264,16 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextViewOD"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blank"
+        app:layout_constraintBottom_toTopOf="@+id/listView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextViewOD" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,11 +65,7 @@ public class MainActivity extends AppCompatActivity {
     Button button3;
     Button button4;
     Button button5;
-    Button button6;
     ListView listView;
-    private Question currentQuestion;
-    private int questionCounter;
-    int id_To_Update = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         button2 = findViewById(R.id.button2);
         button3 = findViewById(R.id.button3);
         button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
 
         MyDbHandler db = new MyDbHandler(MainActivity.this);
         // all Question are displayed in list
@@ -117,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Ravi", "MainActivity listView.setOnItemClickListener onItemClick() 2 list item clicked " + position + " " + Qid);
                     if(rs.moveToFirst()){
                         Log.d("Ravi", "MainActivity listView.setOnItemClickListener onItemClick() 3 list item clicked  " + rs);
-                        edittextView.setClickable(false);
-                        edittextView.setFocusable(false);
+//                        edittextView.setClickable(false);
+//                        edittextView.setFocusable(false);
                         edittextView.setText(rs.getString(rs.getColumnIndex(Params.Question_KEY_ID)));
                         edittextView2.setText(rs.getString(rs.getColumnIndex(Params.Question_Detail)));
                         edittextView3.setText(rs.getString(rs.getColumnIndex(Params.Question_Option1)));
@@ -326,6 +323,26 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+
+        // blank button is clicked
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Blank button is clicked", Toast.LENGTH_SHORT).show();
+                Log.d("Ravi", "MainActivity Blank button5.setOnClickListener onClick ");
+                edittextView.setText("");
+                edittextView2.setText("");
+                edittextView3.setText("");
+                edittextView4.setText("");
+                edittextView5.setText("");
+                edittextView6.setText("");
+                edittextView7.setText("");
+                Log.d("Ravi", "MainActivity Blank button5.setOnClickListener onClick - all filed cleared ");
+            }
+        });
+
+
+
 
         // add record
 //        // get one question
